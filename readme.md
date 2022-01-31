@@ -28,3 +28,39 @@ Yahoo!ファイナンスのWebサイトを見ると、株式、FX、為替の速
 | ZAR        | ランド               |
 | CNH        | 人民元               |
 
+### cheerio-httpcli モジュールをインストール
+HTMLのダウンロードを行うため、「cheerio-httpcli」モジュールをインストールします。
+
+```bash
+npm i cheerio-httpcli
+```
+
+### FX・為替情報を取得するプログラム
+Yahoo!Financeから為替情報を取得するプログラムを`fx-usdjpy.js`と言うファイル名で作成していきます。
+
+```javascript
+var client = require('cheerio-httpcli');
+
+// HTMLをダウンロード
+var code = 'USDJPY'; // 通貨の指定
+var url = "https://info.finance.yahoo.co.jp/fx/detail/";
+// ページの取得
+client.fetch(url, { "code": code }, function (err, $, res) {
+	if (err) { console.log(err); return; }
+	// 値を取得
+	var bid = $("#USDJPY_detail_bid").text();
+	var ask = $("#USDJPY_detail_ask").text();
+	// 結果を表示
+	console.log("Bid=" + bid);
+	console.log("Ask=" + ask);
+});
+```
+実行するには、以下のコマンドを実行します。
+```bash
+node fx-usdjpy.js
+```
+```bash
+Bid=115.544
+Ask=115.54
+```
+
